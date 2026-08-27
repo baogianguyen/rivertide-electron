@@ -13,7 +13,6 @@ export function setupAutoUpdater() {
 
   autoUpdater.on('update-available', (info) => {
     console.log('[Updater] update available:', info.version);
-    // Normalize releaseNotes — can be string, array of {version, note}, or null
     let notes: string | undefined;
     if (typeof info.releaseNotes === 'string') {
       notes = info.releaseNotes;
@@ -44,7 +43,24 @@ export function setupAutoUpdater() {
     sendToMain('updater:error', err.message);
   });
 
+  // Initial check after app is ready
   setTimeout(() => {
     autoUpdater.checkForUpdates().catch((e) => console.error('[Updater] initial check failed:', e.message));
-  }, 3000);
+  }, 5000);
+}
+
+/** Manually trigger update check (called from IPC handler) */
+export function checkForUpdatesNow() {
+  return autoUpdater.checkForUpdates();
+}
+
+/** Manually trigger update download (called from IPC handler) */
+export function downloadUpdateNow() {
+  return autoUpdater.downloadUpdate();
+}
+
+/** Quit and install the downloaded update */
+export function quitAndInstallUpdate() {
+  state.quitting = true;
+  autoUpdater.quitAndInstall();
 }

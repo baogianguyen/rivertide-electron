@@ -228,6 +228,9 @@ export interface AppConfig {
   // Knowledge graph auto-extraction
   knowledgeGraphEnabled: boolean;  // auto-extract knowledge graph facts from dictations
 
+  // Voice analytics
+  voiceAnalyticsEnabled: boolean;  // enable speech analysis and wellness tracking
+
   // Onboarding
   onboardingCompleted: boolean;    // has the user completed first-time onboarding?
 
@@ -283,13 +286,14 @@ export const DEFAULT_CONFIG: AppConfig = {
   fillerWordRemoval: true,
   repetitionElimination: true,
 
-  contextL0Enabled: true,
+  contextL0Enabled: false,
   contextL1Enabled: false,
   contextOcrEnabled: false,
   contextOcrModel: '',
 
   autoLearnDictionary: true,
   knowledgeGraphEnabled: true,
+  voiceAnalyticsEnabled: true,
   onboardingCompleted: false,
 
   personalDictionary: [],

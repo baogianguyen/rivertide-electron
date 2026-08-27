@@ -46,16 +46,18 @@ function avg(arr: number[]): number {
 
 // ─── Analytics Page ──────────────────────────────────────────────────────
 
-export function AnalyticsPage() {
+export function AnalyticsPage({ onNavigate }: { onNavigate?: (page: string) => void }) {
   const history = useConfigStore((s) => s.config.history);
+  const voiceAnalyticsEnabled = useConfigStore((s) => s.config.voiceAnalyticsEnabled);
   const { t } = useTranslation();
 
   const analyses = useMemo(() => {
     return history
-      .filter((h): h is typeof h & { analysis: SpeechAnalysis } => !!h.analysis && !!h.analysis.overallScore)
+      .filter((h): h is typeof h & { analysis: SpeechAnalysis } => !!h.analysis && h.analysis.analyzedAt > 0)
       .sort((a, b) => b.timestamp - a.timestamp);
   }, [history]);
 
+  const dictationCount = history.length;
   const recent30 = analyses.slice(0, 30);
   const overallScore = analyses.length ? Math.round(avg(analyses.map((a) => a.analysis.overallScore))) : 0;
   const avgFluency = analyses.length ? Math.round(avg(analyses.map((a) => a.analysis.fluency))) : 0;
@@ -121,7 +123,46 @@ export function AnalyticsPage() {
 
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
 
-  if (!analyses.length) {
+  if (!voiceAnalyticsEnabled) {
+    return (
+      <div className="flex-1 flex flex-col items-center justify-center gap-6 p-12">
+        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" className="text-surface-300 dark:text-surface-600">
+          <circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/>
+        </svg>
+        <div className="text-center">
+          <p className="text-lg font-semibold text-surface-800 dark:text-surface-200">{t('analytics.disabled')}</p>
+          <p className="text-sm text-surface-500 dark:text-surface-400 mt-1 max-w-xs">{t('analytics.disabledDesc')}</p>
+          <button
+            onClick={() => onNavigate?.('settings')}
+            className="mt-3 px-4 py-2 rounded-lg bg-brand-500 text-white text-sm font-medium hover:bg-brand-600 transition-colors"
+          >
+            {t('analytics.goToSettings')}
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  if (dictationCount < 5) {
+    if (dictationCount > 0) {
+      return (
+        <div className="flex-1 flex flex-col items-center justify-center gap-6 p-12">
+          <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" className="text-surface-300 dark:text-surface-600">
+            <path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/>
+          </svg>
+          <div className="text-center">
+            <p className="text-lg font-semibold text-surface-800 dark:text-surface-200">{t('analytics.noData')}</p>
+            <p className="text-sm text-surface-500 dark:text-surface-400 mt-1">{t('analytics.goToDictation')}</p>
+            <button
+              onClick={() => onNavigate?.('dictation')}
+              className="mt-3 px-4 py-2 rounded-lg bg-brand-500 text-white text-sm font-medium hover:bg-brand-600 transition-colors"
+            >
+              Dictate
+            </button>
+          </div>
+        </div>
+      );
+    }
     return (
       <div className="flex-1 flex flex-col items-center justify-center gap-6 p-12">
         <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" className="text-surface-300 dark:text-surface-600">
@@ -129,6 +170,7 @@ export function AnalyticsPage() {
         </svg>
         <div className="text-center">
           <p className="text-lg font-semibold text-surface-800 dark:text-surface-200">{t('analytics.noData')}</p>
+          <p className="text-sm text-surface-500 dark:text-surface-400 mt-1">{t('analytics.goToDictation')}</p>
         </div>
       </div>
     );
@@ -160,7 +202,7 @@ export function AnalyticsPage() {
             <div className={`text-5xl font-bold font-mono ${scoreColor(overallScore)}`}>
               {overallScore}
             </div>
-            <div className="text-xs text-surface-400 mt-1 font-medium uppercase tracking-wider">
+            <div className="text-xs text-surface-400 mt-1 font-medium">
               {t('analytics.overallScore')}
             </div>
           </div>

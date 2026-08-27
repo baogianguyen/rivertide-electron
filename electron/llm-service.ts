@@ -242,7 +242,6 @@ export class LLMService {
           temperature: opts.temperature ?? 0.6,
           top_p: opts.topP ?? 0.95,
           max_completion_tokens: opts.maxTokens ?? 4096,
-          reasoning_effort: 'none',
         }),
         signal: controller.signal,
       });

@@ -79,6 +79,82 @@ function NodeForm({
   );
 }
 
+function GraphView({ nodes, t }: { nodes: KnowledgeNode[]; t: (key: string) => string }) {
+  const CATEGORY_COLORS: Record<string, string> = {
+    personal: '#3b82f6',
+    work: '#8b5cf6',
+    tech: '#06b6d4',
+    health: '#10b981',
+    social: '#f59e0b',
+    other: '#94a3b8',
+  };
+
+  const filtered = nodes.filter((node) => node.label.trim());
+  const size = 360;
+  const center = size / 2;
+  const radius = size / 2 - 60;
+
+  if (filtered.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center h-full text-center">
+        <p className="text-sm text-surface-400 dark:text-surface-500">{t('knowledgeGraph.noNodes')}</p>
+        <p className="text-xs text-surface-400 dark:text-surface-500 mt-1">{t('knowledgeGraph.noNodesHint')}</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex flex-col items-center justify-center h-full p-4">
+      <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} className="max-w-full max-h-full">
+        {/* Center node (Rivertide) */}
+        <circle cx={center} cy={center} r={28} fill="#3b82f6" stroke="var(--graph-stroke, #1e1e1c)" strokeWidth="2" />
+        <text x={center} y={center + 4} textAnchor="middle" fontSize="11" fontWeight="600" fill="#fff">Rivertide</text>
+
+        {/* Connections + nodes */}
+        {filtered.map((node, i) => {
+          const angle = (i / filtered.length) * Math.PI * 2 - Math.PI / 2;
+          const x = center + radius * Math.cos(angle);
+          const y = center + radius * Math.sin(angle);
+          const color = CATEGORY_COLORS[node.category] || '#94a3b8';
+          const shortLabel = node.label.length > 6 ? node.label.slice(0, 5) + '…' : node.label;
+          const shortContent = node.content.length > 18 ? node.content.slice(0, 17) + '…' : node.content;
+          return (
+            <g key={node.id}>
+              <line x1={center} y1={center} x2={x} y2={y} stroke={color} strokeWidth="1.5" opacity="0.35" />
+              <circle cx={x} cy={y} r={16} fill={color} stroke="var(--graph-stroke, #1e1e1c)" strokeWidth="2" />
+              <text
+                x={x}
+                y={y + 3}
+                textAnchor="middle"
+                fontSize="9"
+                fontWeight="600"
+                fill="#fff"
+                textLength="24"
+                lengthAdjust="spacingAndGlyphs"
+                style={{ pointerEvents: 'none' }}
+              >
+                {shortLabel}
+              </text>
+              {/* Content/data label below */}
+              <text
+                x={x}
+                y={y + 28}
+                textAnchor="middle"
+                fontSize="8"
+                fill="currentColor"
+                className="text-surface-500 dark:text-surface-400"
+                style={{ pointerEvents: 'none' }}
+              >
+                {shortContent}
+              </text>
+            </g>
+          );
+        })}
+      </svg>
+    </div>
+  );
+}
+
 export function KnowledgeGraphPage() {
   const { t } = useTranslation();
   const knowledgeGraph = useConfigStore((s) => s.config.knowledgeGraph);
@@ -89,6 +165,7 @@ export function KnowledgeGraphPage() {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [search, setSearch] = useState('');
+  const [showGraph, setShowGraph] = useState(false);
 
   const filtered = knowledgeGraph.filter((node) => {
     if (!search.trim()) return true;
@@ -120,12 +197,28 @@ export function KnowledgeGraphPage() {
             )}
           </span>
         </div>
-        <button
-          onClick={() => setShowAdd(true)}
-          className="px-3 py-1.5 rounded-lg bg-brand-500 text-white text-xs font-medium hover:bg-brand-600 transition-colors"
-        >
-          {t('knowledgeGraph.add')}
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => setShowGraph((v) => !v)}
+            className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
+              showGraph
+                ? 'bg-brand-500 text-white hover:bg-brand-600'
+                : 'bg-surface-200 dark:bg-surface-700 text-surface-600 dark:text-surface-400 hover:bg-surface-300 dark:hover:bg-surface-600'
+            }`}
+            title={t('knowledgeGraph.graphView')}
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="inline-block mr-1.5 align-middle">
+              <circle cx="5" cy="6" r="3"/><circle cx="19" cy="6" r="3"/><circle cx="12" cy="18" r="3"/><line x1="7" y1="8" x2="11" y2="16"/><line x1="17" y1="8" x2="13" y2="16"/>
+            </svg>
+            {t('knowledgeGraph.graph')}
+          </button>
+          <button
+            onClick={() => setShowAdd(true)}
+            className="px-3 py-1.5 rounded-lg bg-brand-500 text-white text-xs font-medium hover:bg-brand-600 transition-colors"
+          >
+            {t('knowledgeGraph.add')}
+          </button>
+        </div>
       </div>
 
       {/* Search */}
@@ -139,7 +232,12 @@ export function KnowledgeGraphPage() {
         />
       </div>
 
-      {/* Node list */}
+      {/* Graph view or List view */}
+      {showGraph ? (
+        <div className="flex-1 overflow-hidden">
+          <GraphView nodes={knowledgeGraph} t={t} />
+        </div>
+      ) : (
       <div className="flex-1 overflow-y-auto px-6 py-4 space-y-3">
         {/* Add form */}
         {showAdd && (
@@ -248,6 +346,7 @@ export function KnowledgeGraphPage() {
           </div>
         ))}
       </div>
+      )}
     </div>
   );
 }

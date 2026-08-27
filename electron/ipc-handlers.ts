@@ -2,7 +2,6 @@ import { app, ipcMain, clipboard, globalShortcut, systemPreferences, screen, she
 import { execSync } from 'child_process';
 import fs from 'fs';
 import path from 'path';
-import { autoUpdater } from 'electron-updater';
 import { state, isMac } from './app-state';
 import { errMsg } from './utils';
 import { registerShortcuts, toggleRecording } from './shortcut-manager';
@@ -462,11 +461,17 @@ export function setupIPC() {
   });
 
   // ─── Auto updater ────────────────────────────────────────────────────────
-  ipcMain.handle('updater:check', () => autoUpdater.checkForUpdates().catch(() => null));
-  ipcMain.handle('updater:download', () => autoUpdater.downloadUpdate().catch(() => null));
+  ipcMain.handle('updater:check', () => {
+    const { checkForUpdatesNow } = require('./auto-updater');
+    return checkForUpdatesNow();
+  });
+  ipcMain.handle('updater:download', () => {
+    const { downloadUpdateNow } = require('./auto-updater');
+    return downloadUpdateNow();
+  });
   ipcMain.handle('updater:install', () => {
-    state.quitting = true;
-    autoUpdater.quitAndInstall();
+    const { quitAndInstallUpdate } = require('./auto-updater');
+    quitAndInstallUpdate();
   });
   ipcMain.handle('updater:getVersion', () => app.getVersion());
 

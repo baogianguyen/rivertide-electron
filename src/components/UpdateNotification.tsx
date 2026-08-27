@@ -20,6 +20,10 @@ export function UpdateNotification() {
         setStatus('available');
         setDismissed(false);
       }),
+      api.onUpdateNotAvailable(() => {
+        setStatus('idle');
+        setDismissed(true);
+      }),
       api.onDownloadProgress((p) => {
         setPercent(p.percent);
         setStatus('downloading');
@@ -54,7 +58,14 @@ export function UpdateNotification() {
               </p>
               <div className="flex gap-2 mt-3">
                 <button
-                  onClick={() => { window.electronAPI?.downloadUpdate(); setStatus('downloading'); }}
+                  onClick={async () => {
+                    try {
+                      await window.electronAPI?.downloadUpdate();
+                      setStatus('downloading');
+                    } catch {
+                      setStatus('error');
+                    }
+                  }}
                   className="px-3 py-1.5 text-xs font-medium rounded-lg bg-brand-600 hover:bg-brand-500 text-white transition-colors"
                 >
                   {t('update.download')}

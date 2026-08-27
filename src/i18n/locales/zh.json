@@ -112,9 +112,9 @@
     "cleaned": "已清理：移除 {chars} 个字符（减少 {pct}%）",
     "error": "错误",
     "errorApiKey": "未配置 API 密钥",
-    "errorApiKeyDetail": "请在 设置 → API 提供商 中配置密钥。",
+    "errorApiKeyDetail": "请在 设置 → 语音转写 中配置密钥。",
     "errorNoModel": "未选择模型",
-    "errorNoModelDetail": "请在 设置 → API 提供商 中选择模型。",
+    "errorNoModelDetail": "请在 设置 → 语音转写 中选择模型。",
     "errorMic": "麦克风错误",
     "errorNoSpeech": "未检测到语音",
     "errorNoSpeechDetail": "没有听到声音，请靠近麦克风重试。",
@@ -137,7 +137,7 @@
   "settings": {
     "title": "设置",
     "tabs": {
-      "providers": "API 提供商",
+      "providers": "语音转写",
       "general": "通用",
       "hotkey": "快捷键",
       "tones": "语气规则",
@@ -146,7 +146,7 @@
       "advanced": "高级"
     },
     "providers": {
-      "description": "配置语音识别、语言处理和屏幕分析的 API 服务商。",
+      "description": "下载 Whisper 语音识别模型（Whisper Small，由 OpenAI 提供，约 465 MB）用于离线转写。",
       "provider": "提供商",
       "providerDesc": "用于此功能的 API 服务商",
       "apiKey": "API 密钥",
@@ -166,7 +166,7 @@
       "realtime": "实时",
       "presets": "预设",
       "sttTitle": "STT 语音识别",
-      "sttTooltip": "将语音转为原始文字，这是第一步——选择支持你所用语言的提供商。",
+      "sttTooltip": "将语音转为原始文字，这是第一步-选择支持你所用语言的提供商。",
       "llmTitle": "LLM 大模型",
       "llmTooltip": "润色转录文本、移除填充词并应用语气规则。",
       "modelDownloaded": "已下载",
@@ -251,15 +251,18 @@
       "llmPostProcessing": "大模型后处理",
       "llmPostProcessingDesc": "使用大模型润色语音识别结果（去填充词、修正错误、加标点）。关闭后直接输出原始识别文本。",
       "fillerRemoval": "填充词移除",
-      "fillerDesc": "自动移除「嗯」、「啊」、「那个」、「就是」、um、uh 等无意义的填充词",
+      "fillerDesc": "自动移除 um、uh、like、you know、so、actually 等无意义的填充词",
       "repetition": "重复消除",
       "repetitionDesc": "检测并移除无意识的词语/短语重复（例如「我我想」→「我想」）",
       "selfCorrection": "自我纠正检测",
-      "selfCorrectionDesc": "识别句中纠正（例如「周一——不，周二」）并只保留最终意图",
+      "selfCorrectionDesc": "识别句中纠正（例如「周一-不，周二」）并只保留最终意图",
       "autoFormat": "自动格式化",
       "autoFormatDesc": "添加标点符号、大小写，并将口述的列表整理为结构化文本",
       "knowledgeGraphTitle": "知识自动提取",
-      "knowledgeGraphDesc": "每次听写后自动提取个人事实并添加到知识库，用于 AI 助手的个性化回答"
+      "knowledgeGraphDesc": "每次听写后自动提取个人事实并添加到知识库，用于 AI 助手的个性化回答",
+      "knowledgeGraphPrivacy": "完全私密。所有数据仅保存在您的本机上。",
+      "voiceAnalytics": "语音分析",
+      "voiceAnalyticsDesc": "分析语音模式、流利度和认知健康指标"
     }
   },
   "context": {
@@ -269,17 +272,17 @@
     "selectedTextToggle": "输入框感知",
     "selectedTextDesc": "读取选中文本、输入框内容和光标位置，帮助 AI 理解你正在编辑的内容。需要辅助功能权限。",
     "accessibilityGranted": "辅助功能权限已授权",
-    "accessibilityNeeded": "需要辅助功能权限 — 点击授权",
+    "accessibilityNeeded": "需要辅助功能权限 - 点击授权",
     "autoLearnToggle": "自动从转录中学习词条",
     "autoLearnDesc": "从转录中检测专有名词、品牌名和技术术语，自动添加到个人词典"
   },
   "analytics": {
     "pageTitle": "语音分析",
-    "pageSubtitle": "认知健康跟踪 — 非医学诊断",
+    "pageSubtitle": "认知健康跟踪 - 非医学诊断",
     "disclaimer": "⚠ 这不是医学诊断。这些分析仅供个人参考，不能替代专业医疗建议。",
     "overallScore": "健康评分",
-    "noData": "开始口述即可查看语音分析",
-    "goToDictation": "开始口述",
+    "noData": "开始口述以解锁您的语音分析",
+    "goToDictation": "我们需要至少 5 次口述才能生成可靠的洞察。",
     "metrics": {
       "fluency": "流利度",
       "lexicalDiversity": "词汇多样性",
@@ -306,18 +309,25 @@
     "score": "评分",
     "date": "日期",
     "noAnalysesYet": "暂无分析数据。请先进行口述录音。",
-    "appName": "应用"
+    "appName": "应用",
+    "disabled": "语音分析已禁用",
+    "disabledDesc": "请在设置中启用语音分析以跟踪您的语音模式和认知健康。",
+    "goToSettings": "前往设置"
   },
   "chat": {
     "title": "AI 助手",
-    "placeholder": "随便问点什么...",
-    "send": "发送",
-    "thinking": "思考中...",
-    "empty": "开始对话吧！问我任何事情，我会利用你的知识图谱给出个性化回答。"
+    "ctaTitle": "CodeTheCure AI 智能体",
+    "ctaDesc": "登录以访问 AI 智能体、知识图谱和高级医疗工作流。",
+    "ctaSignIn": "登录",
+    "ctaSignUp": "创建账号",
+    "ctaComingSoon": "您的数据分析、RiverTide 和 CodeTheCure AI 聊天之间的连接即将推出。",
+    "ctaPrivacy": "听写历史和录音不会传输到 CodeTheCure，完全私密且保存在您的本地电脑上，不与任何人共享。唯一可能共享的数据（如果您将来选择加入）是语音分析，可在设置中关闭。"
   },
   "knowledgeGraph": {
     "title": "知识",
     "add": "添加信息",
+    "graph": "图谱",
+    "graphView": "切换图谱视图",
     "edit": "编辑",
     "delete": "删除",
     "save": "保存",
@@ -329,7 +339,7 @@
     "category": "分类",
     "search": "搜索信息...",
     "noNodes": "暂无保存信息",
-    "noNodesHint": "添加关于你自己的信息——AI 助手会利用这些信息给出个性化回答。",
+    "noNodesHint": "添加关于你自己的信息-AI 助手会利用这些信息给出个性化回答。",
     "confirmDelete": "删除此项？此操作不可撤销。",
     "cat_personal": "个人",
     "cat_work": "工作",
@@ -393,12 +403,12 @@
     "title": "Groq API 密钥指南",
     "subtitle": "免费获取 Groq API 密钥，为 Rivertide 提供 AI 文本润色能力。",
     "purposeTitle": "这个密钥的用途",
-    "purposeBody": "Rivertide 调用 Groq 云端 API 润色转录文本——移除填充词、修正重复、添加标点，并根据你的规则调整语气。",
+    "purposeBody": "Rivertide 调用 Groq 云端 API 润色转录文本-移除填充词、修正重复、添加标点，并根据你的规则调整语气。",
     "purposeModel": "当前润色模型：{model}",
     "openConsole": "打开 Groq 控制台",
     "openKeysPage": "打开 API Keys 页面",
     "openSettings": "打开设置",
-    "finalHint": "将密钥粘贴到 设置 → API 提供商 → Groq 中。",
+    "finalHint": "将密钥粘贴到 设置 → 语音转写 → Groq 中。",
     "steps": {
       "1": {
         "title": "打开 Groq 控制台",
@@ -418,11 +428,11 @@
       },
       "5": {
         "title": "复制密钥",
-        "body": "密钥只会显示一次，以 gsk_ 开头。请立即复制——出于安全考虑，Groq 不会再次显示它。"
+        "body": "密钥只会显示一次，以 gsk_ 开头。请立即复制-出于安全考虑，Groq 不会再次显示它。"
       },
       "6": {
         "title": "粘贴到 Rivertide",
-        "body": "打开 设置 → API 提供商 → Groq，将密钥粘贴到 API 密钥输入框，然后点击“测试连接”验证。"
+        "body": "打开 设置 → 语音转写 → Groq，将密钥粘贴到 API 密钥输入框，然后点击“测试连接”验证。"
       }
     },
     "securityTitle": "温馨提示",

@@ -164,8 +164,7 @@ body {
 
 /* Rivertide Stat Value */
 .rt-stat-value {
-  font-family: 'JetBrains Mono', monospace;
-  font-weight: 600;
+  font-weight: 700;
   background: linear-gradient(135deg, #003630 0%, #034f46 50%, #0d6b5f 100%);
   background-clip: text;
   -webkit-background-clip: text;

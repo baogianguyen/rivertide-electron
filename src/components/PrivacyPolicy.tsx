@@ -17,7 +17,7 @@ export function PrivacyPolicy({ onClose }: Props) {
           </button>
         )}
       </div>
-      <p className="text-surface-500 text-xs">Last updated: July 2026</p>
+      <p className="text-surface-500 text-xs">Last updated: August 2026</p>
 
       <section>
         <h3 className="font-medium text-surface-800 dark:text-surface-200 mt-4 mb-1">1. What data we collect and why</h3>
@@ -44,10 +44,9 @@ export function PrivacyPolicy({ onClose }: Props) {
           When you use dictation, the following data is sent to third-party API providers you have configured:
         </p>
         <ul className="list-disc pl-5 space-y-1 mt-2 text-surface-600 dark:text-surface-400">
-          <li><strong>Audio recordings</strong> — sent to your configured STT provider for speech recognition</li>
-          <li><strong>Transcribed text</strong> — sent to your configured LLM provider for post-processing (filler removal,
+          <li><strong>Audio recordings</strong> - sent to your configured STT provider for speech recognition</li>
+          <li><strong>Transcribed text</strong> - sent to your configured LLM provider for post-processing (filler removal,
           punctuation, tone adjustment) and, when chat is used, for generating responses</li>
-          <li><strong>Screen context</strong> — if OCR is enabled, screenshots are sent to your configured VLM provider</li>
         </ul>
         <p className="mt-2">
           These providers may process data in accordance with their own privacy policies. We select providers that do not
@@ -99,7 +98,8 @@ export function PrivacyPolicy({ onClose }: Props) {
       <section className="pt-2 border-t border-surface-200 dark:border-surface-700/60">
         <h3 className="font-medium text-surface-800 dark:text-surface-200 mb-1">Contact</h3>
         <p className="text-surface-500 text-xs">
-          Questions about this privacy policy? Reach out on codecure.app.
+          Questions about this privacy policy? Reach out at{' '}
+          <a href="https://www.codethecure.app/contact" target="_blank" rel="noopener noreferrer" className="text-brand-500 hover:text-brand-400 underline underline-offset-2">codethecure.app/contact</a>.
         </p>
       </section>
     </div>

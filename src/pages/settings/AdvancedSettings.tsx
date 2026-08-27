@@ -51,6 +51,22 @@ export function AdvancedSettings() {
         label={t('settings.advanced.knowledgeGraphTitle')}
         description={t('settings.advanced.knowledgeGraphDesc')}
       />
+      {config.knowledgeGraphEnabled && (
+        <div className="flex items-center gap-2 pl-1">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-emerald-500 shrink-0">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+          </svg>
+          <span className="text-xs text-emerald-600 dark:text-emerald-400">{t('settings.advanced.knowledgeGraphPrivacy')}</span>
+        </div>
+      )}
+
+      <Toggle
+        checked={config.voiceAnalyticsEnabled}
+        onChange={(v) => set('voiceAnalyticsEnabled', v)}
+        label={t('settings.advanced.voiceAnalytics')}
+        description={t('settings.advanced.voiceAnalyticsDesc')}
+      />
     </div>
   );
 }

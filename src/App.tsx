@@ -96,13 +96,13 @@ export default function App() {
 
   const renderPage = () => {
     switch (page) {
-      case 'dashboard': return <DashboardPage onNavigate={(p) => setPage(p as PageID)} />;
+      case 'dashboard': return <DashboardPage onNavigate={(p) => { if (p === 'settings') setSettingsOpen(true); else setPage(p as PageID); }} />;
       case 'dictation': return <DictationPage />;
       case 'history': return <HistoryPage />;
       case 'dictionary': return <DictionaryPage />;
       case 'chat': return <ChatPage />;
       case 'knowledgeGraph': return <KnowledgeGraphPage />;
-      case 'analytics': return <AnalyticsPage />;
+      case 'analytics': return <AnalyticsPage onNavigate={(p) => { if (p === 'settings') setSettingsOpen(true); else setPage(p as PageID); }} />;
       case 'guide': return <GroqGuidePage onOpenSettings={() => setSettingsOpen(true)} />;
     }
   };

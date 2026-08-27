@@ -33,7 +33,7 @@
     "starDesc": "If Rivertide helps you, please give us a Star on GitHub to show your support.",
     "goStar": "Go Star",
     "contribute": "Get Involved",
-    "contributeDesc": "Submit an Issue or Pull Request — let's make Rivertide better together.",
+    "contributeDesc": "Submit an Issue or Pull Request - let's make Rivertide better together.",
     "viewIssues": "View Issues",
     "hotCases": "Use Cases",
     "checkUpdate": "Check for updates",
@@ -112,9 +112,9 @@
     "cleaned": "Cleaned: {chars} chars removed ({pct}% reduction)",
     "error": "Error",
     "errorApiKey": "API Key Missing",
-    "errorApiKeyDetail": "Please configure your API key in Settings → API Providers.",
+    "errorApiKeyDetail": "Please configure your API key in Settings → Transcription.",
     "errorNoModel": "Model Not Configured",
-    "errorNoModelDetail": "Please select a model in Settings → API Providers.",
+    "errorNoModelDetail": "Please select a model in Settings → Transcription.",
     "errorMic": "Microphone Error",
     "errorNoSpeech": "No Speech Detected",
     "errorNoSpeechDetail": "We didn't hear anything. Please try again and speak clearly.",
@@ -137,7 +137,7 @@
   "settings": {
     "title": "Settings",
     "tabs": {
-      "providers": "API Providers",
+      "providers": "Transcription",
       "general": "General",
       "hotkey": "Hotkeys",
       "tones": "Tone Rules",
@@ -146,7 +146,7 @@
       "advanced": "Advanced"
     },
     "providers": {
-      "description": "Configure API providers for speech recognition, language processing, and screen analysis.",
+      "description": "Download the Whisper speech recognition model (Whisper Small, provided by OpenAI, ~465 MB) for offline transcription.",
       "provider": "Provider",
       "providerDesc": "The API service to use for this capability",
       "apiKey": "API Key",
@@ -166,7 +166,7 @@
       "realtime": "Realtime",
       "presets": "Presets",
       "sttTitle": "Speech Recognition",
-      "sttTooltip": "Converts your voice into raw text. This is the first step — choose a provider that supports your language.",
+      "sttTooltip": "Converts your voice into raw text. This is the first step - choose a provider that supports your language.",
       "llmTitle": "LLM",
       "llmTooltip": "Polishes transcriptions, removes fillers, and applies tone rules.",
       "modelDownloaded": "Downloaded",
@@ -251,15 +251,18 @@
       "llmPostProcessing": "LLM Post-Processing",
       "llmPostProcessingDesc": "Use LLM to polish STT output (remove fillers, fix errors, add punctuation). When off, raw STT text is used directly.",
       "fillerRemoval": "Filler Word Removal",
-      "fillerDesc": "Automatically remove \"um\", \"uh\", \"like\", \"you know\", \"那个\", \"嗯\" and other meaningless fillers",
+      "fillerDesc": "Automatically remove \"um\", \"uh\", \"like\", \"you know\", \"so\", \"actually\", and other meaningless fillers",
       "repetition": "Repetition Elimination",
       "repetitionDesc": "Detect and remove unintentional word/phrase repetitions (e.g., \"I I want\" → \"I want\")",
       "selfCorrection": "Self-Correction Detection",
-      "selfCorrectionDesc": "Recognize mid-sentence corrections (e.g., \"Monday—no, Tuesday\") and keep only the final intent",
+      "selfCorrectionDesc": "Recognize mid-sentence corrections (e.g., \"Monday-no, Tuesday\") and keep only the final intent",
       "autoFormat": "Auto Formatting",
       "autoFormatDesc": "Add punctuation, capitalization, and organize spoken lists into structured text",
       "knowledgeGraphTitle": "Knowledge Auto-Extraction",
-      "knowledgeGraphDesc": "After each dictation, extract personal facts and add them to your knowledge for personalized AI chat responses"
+      "knowledgeGraphDesc": "After each dictation, extract personal facts and add them to your knowledge for personalized AI chat responses",
+      "knowledgeGraphPrivacy": "Fully private. All data is saved locally on your machine.",
+      "voiceAnalytics": "Voice Analytics",
+      "voiceAnalyticsDesc": "Analyze speech patterns, fluency, and cognitive wellness metrics from your dictations"
     }
   },
   "context": {
@@ -269,17 +272,17 @@
     "selectedTextToggle": "Input field awareness",
     "selectedTextDesc": "Read selected text, field content, and cursor position to help the AI understand what you're editing. Requires accessibility permission.",
     "accessibilityGranted": "Accessibility permission granted",
-    "accessibilityNeeded": "Accessibility permission required — click to grant",
+    "accessibilityNeeded": "Accessibility permission required - click to grant",
     "autoLearnToggle": "Auto-learn terms from transcriptions",
     "autoLearnDesc": "Detect proper nouns, brand names, and technical terms from transcriptions and add them to your dictionary automatically"
   },
   "analytics": {
     "pageTitle": "Speech Analysis",
-    "pageSubtitle": "Cognitive wellness tracking — not a medical diagnosis",
+    "pageSubtitle": "Cognitive wellness tracking - not a medical diagnosis",
     "disclaimer": "⚠ This is not a medical diagnosis. These analytics are for personal tracking only and should not be used as a substitute for professional medical advice.",
     "overallScore": "Wellness Score",
-    "noData": "Start dictating to see your speech analytics",
-    "goToDictation": "Go to Dictation",
+    "noData": "Start dictating to unlock your speech analytics",
+    "goToDictation": "We need at least 5 dictations to generate reliable insights.",
     "metrics": {
       "fluency": "Fluency",
       "lexicalDiversity": "Lexical Diversity",
@@ -306,18 +309,25 @@
     "score": "Score",
     "date": "Date",
     "noAnalysesYet": "No analyses yet. Record some dictations first.",
-    "appName": "App"
+    "appName": "App",
+    "disabled": "Voice Analytics Disabled",
+    "disabledDesc": "Enable Voice Analytics in Settings to track your speech patterns and cognitive wellness.",
+    "goToSettings": "Go to Settings"
   },
   "chat": {
     "title": "AI Chat",
-    "placeholder": "Ask anything...",
-    "send": "Send",
-    "thinking": "Thinking...",
-    "empty": "Start a conversation! Ask me anything, and I'll use your knowledge graph to give personalized answers."
+    "ctaTitle": "CodeTheCure AI Agents",
+    "ctaDesc": "Sign in to access AI agents, knowledge graphs, and advanced healthcare workflows.",
+    "ctaSignIn": "Sign In",
+    "ctaSignUp": "Create Account",
+    "ctaComingSoon": "Connection between your data analytics, RiverTide, and your CodeTheCure AI chats is coming soon.",
+    "ctaPrivacy": "Dictation history and recordings are not transferred to CodeTheCure and remain fully private and local on your computer, shared with no one. The only data shared (if you opt in in the future) is voice analytics, which can be turned off in settings."
   },
   "knowledgeGraph": {
     "title": "Knowledge",
     "add": "Add Info",
+    "graph": "Graph",
+    "graphView": "Toggle graph view",
     "edit": "Edit",
     "delete": "Delete",
     "save": "Save",
@@ -329,7 +339,7 @@
     "category": "Category",
     "search": "Search info...",
     "noNodes": "No info saved yet",
-    "noNodesHint": "Add facts about yourself — the AI chat uses this to give personalized answers.",
+    "noNodesHint": "Add facts about yourself - the AI chat uses this to give personalized answers.",
     "confirmDelete": "Delete this? This cannot be undone.",
     "cat_personal": "Personal",
     "cat_work": "Work",
@@ -378,12 +388,12 @@
     "title": "Groq API Key Guide",
     "subtitle": "Set up a free Groq API key to power AI text polishing in Rivertide.",
     "purposeTitle": "What this key is used for",
-    "purposeBody": "Rivertide calls the Groq cloud API to polish your transcriptions — removing fillers, fixing repetitions, adding punctuation, and adjusting tone based on your rules.",
+    "purposeBody": "Rivertide calls the Groq cloud API to polish your transcriptions - removing fillers, fixing repetitions, adding punctuation, and adjusting tone based on your rules.",
     "purposeModel": "Active polishing model: {model}",
     "openConsole": "Open Groq Console",
     "openKeysPage": "Open API Keys page",
     "openSettings": "Open Settings",
-    "finalHint": "Paste the key in Settings → API Providers → Groq.",
+    "finalHint": "Paste the key in Settings → Transcription → Groq.",
     "steps": {
       "1": {
         "title": "Open the Groq Console",
@@ -403,16 +413,16 @@
       },
       "5": {
         "title": "Copy the key",
-        "body": "Your key appears once and starts with gsk_. Copy it right away — for security, Groq won't show it again."
+        "body": "Your key appears once and starts with gsk_. Copy it right away - for security, Groq won't show it again."
       },
       "6": {
         "title": "Paste it into Rivertide",
-        "body": "Open Settings → API Providers → Groq, paste the key into the API Key field, then click \"Test Connection\" to verify."
+        "body": "Open Settings → Transcription → Groq, paste the key into the API Key field, then click \"Test Connection\" to verify."
       }
     },
     "securityTitle": "Good to know",
     "securityLocal": "Your key is stored locally on this device and is only sent to api.groq.com when Rivertide makes a request.",
-    "securityLost": "If you lose a key, delete it in the console and create a new one — you don't need to wait for anything.",
+    "securityLost": "If you lose a key, delete it in the console and create a new one - you don't need to wait for anything.",
     "securityShare": "Never share your key or commit it to source control. Anyone with it can spend your Groq quota."
   },
   "common": {

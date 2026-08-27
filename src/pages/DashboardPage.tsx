@@ -67,6 +67,7 @@ export function DashboardPage({ onNavigate }: { onNavigate?: (page: string) => v
   const { t } = useTranslation();
   const [version, setVersion] = useState('');
   const [updateMsg, setUpdateMsg] = useState<string | null>(null);
+  const [checking, setChecking] = useState(false);
   const [selectedItem, setSelectedItem] = useState<HistoryItem | null>(null);
 
   useEffect(() => {
@@ -75,11 +76,32 @@ export function DashboardPage({ onNavigate }: { onNavigate?: (page: string) => v
   // Default to 1.0.0 if not in Electron
   if (!window.electronAPI && !version) setVersion('1.0.0');
 
-  // Show "Coming soon" toast when check for updates is clicked
+  // Real updater check
   const handleCheckUpdate = useCallback(() => {
-    setUpdateMsg('Coming soon');
-    setTimeout(() => setUpdateMsg(null), 2000);
-  }, []);
+    if (!window.electronAPI || checking) {
+      setUpdateMsg('Coming soon');
+      setTimeout(() => setUpdateMsg(null), 2000);
+      return;
+    }
+    setChecking(true);
+    setUpdateMsg(t('dashboard.checking'));
+    const timeout = setTimeout(() => {
+      setUpdateMsg(null);
+      setChecking(false);
+    }, 15000);
+    window.electronAPI.checkForUpdates()
+      .then(() => {
+        clearTimeout(timeout);
+        setUpdateMsg(null);
+        setChecking(false);
+      })
+      .catch(() => {
+        clearTimeout(timeout);
+        setUpdateMsg(t('dashboard.upToDate'));
+        setChecking(false);
+        setTimeout(() => setUpdateMsg(null), 2000);
+      });
+  }, [t, checking]);
 
   // Stats — computed from history (single pass)
   const stats = useMemo(() => {
@@ -133,13 +155,26 @@ export function DashboardPage({ onNavigate }: { onNavigate?: (page: string) => v
 
           {/* ── Hero ── */}
           <div className="rt-card p-6 overflow-hidden relative">
+            {/* Glassmorphic texture overlay */}
+            <div className="absolute inset-0 pointer-events-none rounded-2xl overflow-hidden">
+              <div className="absolute inset-0 opacity-[0.35] dark:opacity-[0.2]"
+                style={{
+                  background: `
+                    radial-gradient(ellipse at 20% 50%, rgba(16,185,129,0.12) 0%, transparent 50%),
+                    radial-gradient(ellipse at 80% 30%, rgba(59,130,246,0.10) 0%, transparent 50%),
+                    radial-gradient(ellipse at 50% 80%, rgba(139,92,246,0.08) 0%, transparent 50%)
+                  `,
+                  filter: 'blur(40px)',
+                }}
+              />
+            </div>
             {/* Subtle logo watermark */}
-            <div className="absolute right-0 top-1/2 -translate-y-1/2 w-36 h-36 opacity-[0.04] dark:opacity-[0.06] pointer-events-none">
+            <div className="absolute right-0 top-1/2 -translate-y-1/2 w-36 h-36 opacity-[0.07] dark:opacity-[0.1] pointer-events-none">
               <img src={logoSrc} className="w-full h-full object-contain" alt="" />
             </div>
             <div className="relative z-10 flex items-start gap-5">
-              <div className="w-12 h-12 rounded-2xl bg-brand-500/10 dark:bg-brand-500/15 flex items-center justify-center shrink-0 border border-brand-500/10">
-                <img src={logoSrc} className="w-8 h-8 rounded-lg" alt="" />
+              <div className="w-12 h-12 rounded-2xl flex items-center justify-center shrink-0">
+                <img src={logoSrc} className="w-10 h-10 rounded-lg" alt="" />
               </div>
               <div className="flex-1 min-w-0">
                 <h1 className="text-[22px] font-bold text-surface-900 dark:text-surface-100 tracking-tight leading-tight">
@@ -160,11 +195,11 @@ export function DashboardPage({ onNavigate }: { onNavigate?: (page: string) => v
               <div className="absolute inset-0 flex items-center justify-end pointer-events-none overflow-hidden">
                 <img
                   src={logoSrc}
-                  className="w-48 h-48 object-contain opacity-[0.03] dark:opacity-[0.05] mr-4"
+                  className="w-48 h-48 object-contain opacity-[0.08] dark:opacity-[0.12] mr-4"
                   alt=""
                 />
               </div>
-              <div className="relative z-10 grid grid-cols-2 divide-x divide-y divide-surface-100 dark:divide-surface-800/50">
+              <div className="relative z-10 grid grid-cols-2">
                 <StatCell
                   label={t('dashboard.totalTime')}
                   value={stats.totalHr > 0 ? `${stats.totalHr} ${t('dashboard.hr')} ${stats.totalMin} ${t('dashboard.min')}` : `${stats.totalMin} ${t('dashboard.min')}`}
@@ -173,15 +208,18 @@ export function DashboardPage({ onNavigate }: { onNavigate?: (page: string) => v
                   label={t('dashboard.totalWords')}
                   value={stats.totalWords >= 1000 ? `${(stats.totalWords / 1000).toFixed(1)}K` : `${stats.totalWords}`}
                   unit={t('dashboard.wordsUnit')}
+                  border={`border-l ${STAT_BORDER}`}
                 />
                 <StatCell
                   label={t('dashboard.timeSaved')}
                   value={stats.savedMinutes > 60 ? `${Math.floor(stats.savedMinutes / 60)} ${t('dashboard.hr')} ${stats.savedMinutes % 60} ${t('dashboard.min')}` : `${stats.savedMinutes} ${t('dashboard.min')}`}
+                  border={`border-t ${STAT_BORDER}`}
                 />
                 <StatCell
                   label={t('dashboard.avgSpeed')}
                   value={`${stats.avgWPM}`}
                   unit="WPM"
+                  border={`border-l border-t ${STAT_BORDER}`}
                 />
               </div>
             </div>
@@ -245,9 +283,10 @@ export function DashboardPage({ onNavigate }: { onNavigate?: (page: string) => v
         <div className="relative flex items-center gap-2">
           <button
             onClick={handleCheckUpdate}
-            className="text-brand-500 hover:text-brand-400 transition-colors"
+            disabled={checking}
+            className={`text-brand-500 hover:text-brand-400 transition-colors ${checking ? 'opacity-50 cursor-not-allowed' : ''}`}
           >
-            {t('dashboard.checkUpdate')}
+            {checking ? t('dashboard.checking') : t('dashboard.checkUpdate')}
           </button>
           {updateMsg && (
             <span
@@ -268,10 +307,11 @@ export function DashboardPage({ onNavigate }: { onNavigate?: (page: string) => v
 }
 
 /* ── Stat cell (inside the unified stats card) ── */
-function StatCell({ label, value, unit }: { label: string; value: string; unit?: string }) {
+const STAT_BORDER = 'border-dashed border-surface-200 dark:border-surface-700/60';
+function StatCell({ label, value, unit, border }: { label: string; value: string; unit?: string; border?: string }) {
   return (
-    <div className="px-6 py-5">
-      <div className="text-[11px] uppercase tracking-wider text-surface-400 dark:text-surface-500 mb-2 font-medium">
+    <div className={`px-6 py-5 ${border || ''}`}>
+      <div className="text-[11px] text-surface-400 dark:text-surface-500 mb-2 font-medium">
         {label}
       </div>
       <div className="flex items-baseline gap-1.5">

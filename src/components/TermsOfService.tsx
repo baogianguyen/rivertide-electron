@@ -17,14 +17,12 @@ export function TermsOfService({ onClose }: Props) {
           </button>
         )}
       </div>
-      <p className="text-surface-500 text-xs">Last updated: July 2026</p>
+      <p className="text-surface-500 text-xs">Last updated: August 2026</p>
 
       <section>
         <h3 className="font-medium text-surface-800 dark:text-surface-200 mt-4 mb-1">1. Acceptance of Terms</h3>
         <p>
           By using Rivertide, you agree to these Terms of Service. If you do not agree, do not use the application.
-          Rivertide is provided as a wellness tool for oncology patients and caregivers to manage treatment-related
-          cognitive challenges.
         </p>
       </section>
 
@@ -34,7 +32,7 @@ export function TermsOfService({ onClose }: Props) {
           Rivertide is a voice dictation and AI assistant desktop application that:
         </p>
         <ul className="list-disc pl-5 space-y-1 mt-2 text-surface-600 dark:text-surface-400">
-          <li>Converts speech to text using third-party API providers</li>
+          <li>Converts speech to text using a local Whisper model (offline) or third-party API providers</li>
           <li>Processes and polishes transcribed text using language models</li>
           <li>Provides a knowledge graph for personal information storage</li>
           <li>Offers an AI chat interface that may access your knowledge graph</li>
@@ -44,7 +42,7 @@ export function TermsOfService({ onClose }: Props) {
       <section>
         <h3 className="font-medium text-surface-800 dark:text-surface-200 mt-4 mb-1">3. User Responsibilities</h3>
         <ul className="list-disc pl-5 space-y-1 mt-2 text-surface-600 dark:text-surface-400">
-          <li>You are responsible for providing your own API keys for third-party services</li>
+          <li>You are responsible for providing your own API keys for third-party services (if used)</li>
           <li>You must comply with the terms of service of any API providers you configure</li>
           <li>You should not dictate sensitive information you are not comfortable sharing with API providers</li>
           <li>You are responsible for maintaining the confidentiality of your API keys</li>
@@ -55,15 +53,8 @@ export function TermsOfService({ onClose }: Props) {
         <h3 className="font-medium text-surface-800 dark:text-surface-200 mt-4 mb-1">4. Third-Party Services</h3>
         <p>
           Rivertide acts as a client to third-party API services. Your use of these services is subject to their
-          respective terms:
+          respective terms.
         </p>
-        <ul className="list-disc pl-5 space-y-1 mt-2 text-surface-600 dark:text-surface-400">
-          <li>Groq Cloud — <span className="text-[10px] break-all">https://groq.com/terms</span></li>
-          <li>SiliconFlow — <span className="text-[10px] break-all">https://siliconflow.cn/terms</span></li>
-          <li>OpenAI — <span className="text-[10px] break-all">https://openai.com/policies</span></li>
-          <li>DashScope (Alibaba Cloud) — <span className="text-[10px] break-all">https://www.aliyun.com/terms</span></li>
-          <li>OpenRouter — <span className="text-[10px] break-all">https://openrouter.ai/terms</span></li>
-        </ul>
       </section>
 
       <section>
@@ -89,8 +80,8 @@ export function TermsOfService({ onClose }: Props) {
       <section>
         <h3 className="font-medium text-surface-800 dark:text-surface-200 mt-4 mb-1">7. Intellectual Property</h3>
         <p>
-          Rivertide is an open-source application. The code is publicly available. Your data — transcriptions, dictionary
-          entries, knowledge graph facts, and settings — belongs to you.
+          Rivertide is an open-source application. The code is publicly available. Your data, including transcriptions,
+          dictionary entries, knowledge graph facts, and settings, belongs to you.
         </p>
       </section>
 

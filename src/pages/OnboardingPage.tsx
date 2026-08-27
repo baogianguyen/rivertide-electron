@@ -143,8 +143,25 @@ export function OnboardingPage({ onComplete }: { onComplete: () => void }) {
                   Welcome to Rivertide
                 </h1>
                 <p className="text-sm text-surface-500 dark:text-surface-400 mt-3 leading-relaxed">
-                  Your personal voice assistant — designed to help you manage the cognitive load of treatment.
+                  Your personal voice assistant designed to help you manage the cognitive load of treatment.
                   Let's get to know each other so I can give you better, more personalized responses.
+                </p>
+              </div>
+              {/* Privacy disclaimer */}
+              <div className="bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-200/60 dark:border-emerald-500/20 rounded-xl px-5 py-4 text-left space-y-2.5">
+                <div className="flex items-center gap-2">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-emerald-600 dark:text-emerald-400 shrink-0">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                  </svg>
+                  <span className="text-xs font-semibold text-emerald-800 dark:text-emerald-300 uppercase tracking-wide">Your Privacy</span>
+                </div>
+                <p className="text-[13px] text-emerald-900 dark:text-emerald-200 leading-relaxed">
+                  All transcription, data storage, and audio recordings remain <strong>100% local</strong> and are never stored on our servers.
+                </p>
+                <p className="text-[12px] text-emerald-700 dark:text-emerald-300/80 leading-relaxed">
+                  The only cloud interactions occur during AI chat and optional LLM text polishing, both of which can be disabled in Settings.
+                  AI chat history and dictations are strictly stored locally. Please note that AI can make mistakes.
                 </p>
               </div>
             </div>
@@ -157,7 +174,7 @@ export function OnboardingPage({ onComplete }: { onComplete: () => void }) {
                   What should I call you?
                 </h2>
                 <p className="text-sm text-surface-500 dark:text-surface-400 mt-1">
-                  Your first name, a nickname — whatever feels right.
+                  Your first name, a nickname, whatever feels right.
                 </p>
               </div>
               <input
@@ -287,9 +304,9 @@ export function OnboardingPage({ onComplete }: { onComplete: () => void }) {
                   />
                   <div className="flex-1">
                     <span className="text-sm text-surface-700 dark:text-surface-300">
-                      I understand that my voice recordings and text may be sent to external AI services
-                      (such as Groq) for speech recognition and text processing only.
-                      All other data stays on my device.
+                      I understand that all transcription, data storage, and audio recordings remain 100% local and are never stored on Rivertide servers.
+                      The only cloud interactions are AI chat (optional) and LLM text polishing (can be disabled in Settings).
+                      AI chat history and dictations are stored strictly locally, not on any server.
                     </span>
                   </div>
                 </label>
@@ -309,7 +326,7 @@ export function OnboardingPage({ onComplete }: { onComplete: () => void }) {
                   You're all set{name ? `, ${name.trim()}` : ''}!
                 </h1>
                 <p className="text-sm text-surface-500 dark:text-surface-400 mt-3 leading-relaxed">
-                  Everything you shared is saved to your personal knowledge — you can edit or delete
+                  Everything you shared is saved to your personal knowledge. You can edit or delete
                   anything anytime. Press <kbd className="inline-block mx-0.5 px-1.5 py-0.5 bg-white dark:bg-surface-700 border border-surface-200 dark:border-surface-600 rounded text-[11px] font-mono shadow-sm">{window.electronAPI?.platform === 'darwin' ? 'Cmd+Shift+Space' : 'Ctrl+Shift+Space'}</kbd> to start dictating.
                 </p>
               </div>
